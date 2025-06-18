@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Your Bill</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header><h1>Your Bill</h1></header>
+  <section id="bill"></section>
+  <div class="buttons">
+    <button onclick="clearBill()">Clear Order</button>
+  </div>
+  <script>
+    const billSection = document.getElementById('bill');
+    let cart = JSON.parse(localStorage.getItem('cart')) || [];
+
+    function renderBill() {
+      if (cart.length === 0) {
+        billSection.innerHTML = "<p>Your order is empty.</p>";
+        return;
+      }
+
+      let total = 0;
+      let html = "<table><tr><th>Item</th><th>Qty</th><th>Price</th><th>Action</th></tr>";
+      cart.forEach((item, index) => {
+        const itemTotal = item.price * item.quantity;
+        total += itemTotal;
+        html += `<tr>
+          <td>${item.name}</td>
+          <td>${item.quantity}</td>
+          <td>₹${itemTotal}</td>
+          <td><button onclick="removeItem(${index})">Remove</button></td>
+        </tr>`;
+      });
+      html += `<tr><td colspan="2"><strong>Total</strong></td><td colspan="2"><strong>₹${total}</strong></td></tr>`;
+      html += "</table>";
+      billSection.innerHTML = html;
+    }
+
+    function removeItem(index) {
+      cart.splice(index, 1);
+      localStorage.setItem('cart', JSON.stringify(cart));
+      renderBill();
+    }
+
+    function clearBill() {
+      localStorage.removeItem('cart');
+      cart = [];
+      renderBill();
+    }
+
+    renderBill();
+  </script>
+</body>
+</html>
