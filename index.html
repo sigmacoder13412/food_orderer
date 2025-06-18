@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Food Menu</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header><h1>Food Menu</h1></header>
+  <section class="menu-grid">
+    <div class="menu-item" data-name="Pizza" data-price="200">🍕 Pizza</div>
+    <div class="menu-item" data-name="Burger" data-price="150">🍔 Burger</div>
+    <div class="menu-item" data-name="Soft Drinks" data-price="50">🥤 Soft Drinks</div>
+    <div class="menu-item" data-name="Fries" data-price="80">🍟 Fries</div>
+    <div class="menu-item" data-name="Cake" data-price="120">🍰 Cake</div>
+    <div class="menu-item" data-name="Idly" data-price="40">🍛 Idly</div>
+    <div class="menu-item" data-name="Dosa" data-price="60">🌯 Dosa</div>
+    <div class="menu-item" data-name="Chole Bhature" data-price="100">🍲 Chole Bhature</div>
+    <div class="menu-item" data-name="Butter Chicken" data-price="250">🍗 Butter Chicken</div>
+    <div class="menu-item" data-name="Roti" data-price="15">🍞 Roti</div>
+    <div class="menu-item" data-name="Kadai Vegetables" data-price="180">🥘 Kadai Vegetables</div>
+  </section>
+  <div class="bill-link">
+    <a href="bill.html">View Your Bill</a>
+  </div>
+  <script>
+    const items = document.querySelectorAll('.menu-item');
+    items.forEach(item => {
+      item.addEventListener('click', () => {
+        const name = item.getAttribute('data-name');
+        const price = parseInt(item.getAttribute('data-price'));
+        const quantity = parseInt(prompt(`Enter quantity for ${name}:`, 1));
+        if (!quantity || quantity <= 0) return;
+
+        let cart = JSON.parse(localStorage.getItem('cart')) || [];
+        cart.push({ name, price, quantity });
+        localStorage.setItem('cart', JSON.stringify(cart));
+        alert(`${quantity} x ${name} added to your bill.`);
+      });
+    });
+  </script>
+</body>
+</html>
